@@ -1,0 +1,37 @@
+# Godot 4+ y 3+ archivos internos y cachés
+.godot/
+.import/
+
+# Archivos de exportación de compilación (binarios generados)
+export/
+export_presets.cfg
+
+# Archivos de configuración y estado del editor/usuario
+*.translation
+*.tmp
+
+# C# / Mono / .NET (si utilizas la versión .NET de Godot)
+.vs/
+.idea/
+.vscode/
+bin/
+obj/
+*.csproj.user
+*.suo
+*.user
+*.userprefs
+*.sln.docstates
+
+# Archivos temporales o de swap de editores de texto
+*~
+*.swp
+*.swo
+
+# Archivos del sistema operativo
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs de depuración o crash dumps
+*.log
+*.dmp
