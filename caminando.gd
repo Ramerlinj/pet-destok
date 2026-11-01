@@ -8,8 +8,20 @@ var idler_timer = 0.0
 var is_idling = false
 @onready var animate_sprite = $AnimatedSprite2D
 @onready var area =$AnimatedSprite2D/Area2D
+@onready var dialog_label = $DialogueLabel
 var is_dragging = false
 var drag_offset = Vector2()
+var click_start = Vector2()
+var dialog : Tween
+
+var frases: Array[String] = [
+	"Tú puedes con todo hoy!",
+	"A darle con ganas!",
+	"Un pasito a la vez, crack.",
+	"No te rindas ahora!",
+	"Hoy toca romperla!",
+	"Si la vida te da limones cogelos"
+]
 
 func _physics_process(delta: float) -> void:
 	if is_dragging:
@@ -18,14 +30,13 @@ func _physics_process(delta: float) -> void:
 		DisplayServer.window_set_position(Vector2i(new_win_pos))
 		return
 	
-	# Gestionar el estado de descanso/dormir
 	if is_idling:
 		idler_timer -= delta
 		if idler_timer <= 0:
 			is_idling = false
 			speed = 300
 			animate_sprite.play("walk")
-		return # Detiene el movimiento mientras duerme/espera
+		return 
 	
 	var window_position = Vector2(DisplayServer.window_get_position())
 	window_position += direction * speed * delta
@@ -44,24 +55,82 @@ func _physics_process(delta: float) -> void:
 		maybe_idle()
 
 func maybe_idle():
-	# 30% de probabilidad al chocar con un borde
-	if randf() < 0.8:
+	var r = randf()
+	if r < 0.3:
 		is_idling = true
 		idler_timer = randf_range(2.0, 4.0)
 		speed = 0
 		animate_sprite.play("sleep")
+	elif r < 1:
+		is_idling = true
+		idler_timer = randf_range(1.5, 3.0)
+		speed = 0
+		animate_sprite.play("sit")
+		look_at_mouse()
 
 func _on_area_input (_viewport, event, _shape_idx):
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+		var mouse_pos = Vector2(DisplayServer.mouse_get_position())
+		
 		if event.pressed:
 			is_dragging =true
-			var mouse_pos = Vector2(DisplayServer.mouse_get_position())
+			click_start = mouse_pos
+			animate_sprite.play("sit")
+			
 			var win_pos = Vector2(DisplayServer.window_get_position())
 			drag_offset = mouse_pos - win_pos
 		else:
 			is_dragging = false
+			animate_sprite.play("walk")
+			if click_start.distance_to(mouse_pos) < 5.0:
+				animate_sprite.play("greeting")
+				say_something()
+
+var last_phrase: String = ""
+
+func squash_and_stretch():
+	var base_scale = animate_sprite.scale
+	var tween = create_tween()
+	tween.tween_property(animate_sprite, "scale", Vector2(base_scale.x * 1.2, base_scale.y * 0.8), 0.08)
+	tween.tween_property(animate_sprite, "scale", base_scale, 0.12).set_trans(Tween.TRANS_BOUNCE)
+
+func say_something(	):
+	squash_and_stretch()
+	if dialog and  dialog.is_valid():
+		dialog.kill()
+	
+	is_idling = true
+	idler_timer = 2.4
+	speed = 0
+	
+	var available_phrases = frases.filter(func(p): return p != last_phrase)
+	var chosen_phrase = available_phrases.pick_random()
+	last_phrase = chosen_phrase
+	
+	dialog_label.text = frases.pick_random()
+	dialog_label.modulate.a = 1.0
+	dialog_label.visible = true
+	
+	dialog = create_tween()
+	dialog.tween_interval(2.0)
+	dialog.tween_property(dialog_label, "modulate:a", 0.0,0.4)
+	dialog.tween_callback(func(): dialog_label.visible =false)
+
+func look_at_mouse():
+	var mouse_pos = Vector2(DisplayServer.mouse_get_position())
+	var win_pos = Vector2(DisplayServer.window_get_position())
+	
+	# Si el cursor está a la izquierda, mira a la izquierda; si no, a la derecha
+	if mouse_pos.x < win_pos.x:
+		direction.x = -1
+		animate_sprite.flip_h = true
+	else:
+		direction.x = 1
+		animate_sprite.flip_h = false
 
 func _ready():
 	screen_size = Vector2(DisplayServer.screen_get_size())
 	animate_sprite.play("walk")
 	area.input_event.connect(_on_area_input)
+	dialog_label.visible = false
+	

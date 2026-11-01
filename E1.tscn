@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://rormrmhgovrh" path="res://caminando.gd" id="1_ovojc"]
 [ext_resource type="Texture2D" uid="uid://7expiao2j7id" path="res://Sin-fondo-panda-sprite.png" id="2_ssx08"]
+[ext_resource type="Texture2D" uid="uid://dt015sgccatt5" path="res://Dialog.png" id="3_ssx08"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_tktxf"]
 atlas = ExtResource("2_ssx08")
@@ -18,6 +19,10 @@ region = Rect2(3001, 1696, 998, 838)
 [sub_resource type="AtlasTexture" id="AtlasTexture_vq8mr"]
 atlas = ExtResource("2_ssx08")
 region = Rect2(3999, 1696, 998, 838)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1kg6o"]
+atlas = ExtResource("3_ssx08")
+region = Rect2(1767, 0, 1767, 3375)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_4gfq4"]
 atlas = ExtResource("2_ssx08")
@@ -96,6 +101,14 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_1kg6o")
+}],
+"loop": 1,
+"name": &"saludo",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_4gfq4")
 }, {
 "duration": 1.0,
@@ -153,21 +166,38 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_cygip"]
-size = Vector2(943.97705, 886.8403)
+size = Vector2(1186.2506, 1038.1954)
+
+[sub_resource type="LabelSettings" id="LabelSettings_g4v7s"]
+outline_size = 5
+outline_color = Color(0, 0, 0, 0)
 
 [node name="Node2D" type="Node2D" unique_id=34309638]
 script = ExtResource("1_ovojc")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1258741337]
-position = Vector2(102, 100.00001)
-scale = Vector2(0.19809808, 0.21813841)
+position = Vector2(97, 109.99999)
+scale = Vector2(0.1686124, 0.19026229)
 sprite_frames = SubResource("SpriteFrames_wojao")
-animation = &"walk"
-frame_progress = 0.5914752
+animation = &"greeting"
 
 [node name="Area2D" type="Area2D" parent="AnimatedSprite2D" unique_id=62955819]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AnimatedSprite2D/Area2D" unique_id=1642414857]
-position = Vector2(12.619995, -10.420227)
-scale = Vector2(0.9999999, 0.9999998)
+position = Vector2(23.67395, -61.834167)
+scale = Vector2(0.9999998, 1)
 shape = SubResource("RectangleShape2D_cygip")
+
+[node name="DialogueLabel" type="Label" parent="." unique_id=719187183]
+texture_filter = 1
+offset_left = 20.0
+offset_top = 4.0
+offset_right = 191.0
+offset_bottom = 47.0
+theme_override_colors/font_color = Color(0.98081595, 1, 0.38104996, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+text = "oliii"
+label_settings = SubResource("LabelSettings_g4v7s")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
