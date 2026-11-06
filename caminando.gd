@@ -20,8 +20,13 @@ var frases: Array[String] = [
 	"Un pasito a la vez, crack.",
 	"No te rindas ahora!",
 	"Hoy toca romperla!",
-	"Si la vida te da limones cogelos"
+	"Si la vida te da limones cogelos",
+	"Si te caes, levantate.",
+	"La vida es mejor cuando eres bueno",
+	"La vida es bella, disfrutala",
+	"Dame una banana, Si?"
 ]
+
 
 func _physics_process(delta: float) -> void:
 	if is_dragging:
@@ -36,6 +41,11 @@ func _physics_process(delta: float) -> void:
 			is_idling = false
 			speed = 300
 			animate_sprite.play("walk")
+			var tween = create_tween()
+			var base_scale = animate_sprite.scale
+			
+			tween.tween_property(animate_sprite, "scale", Vector2(base_scale.x * 1.2, base_scale.y * 0.8), 0.08)
+			tween.tween_property(animate_sprite, "scale", base_scale, 0.12).set_trans(Tween.TRANS_BOUNCE)
 		return 
 	
 	var window_position = Vector2(DisplayServer.window_get_position())
@@ -56,12 +66,17 @@ func _physics_process(delta: float) -> void:
 
 func maybe_idle():
 	var r = randf()
-	if r < 0.3:
+	if r < 0.5:
 		is_idling = true
 		idler_timer = randf_range(2.0, 4.0)
 		speed = 0
 		animate_sprite.play("sleep")
-	elif r < 1:
+		var tween = create_tween()
+		var base_scale = animate_sprite.scale
+			
+		tween.tween_property(animate_sprite, "scale", Vector2(base_scale.x * 1.2, base_scale.y * 0.8), 0.08)
+		tween.tween_property(animate_sprite, "scale", base_scale, 0.12).set_trans(Tween.TRANS_BOUNCE)
+	elif r < 0.8:
 		is_idling = true
 		idler_timer = randf_range(1.5, 3.0)
 		speed = 0
@@ -94,18 +109,14 @@ func squash_and_stretch():
 	tween.tween_property(animate_sprite, "scale", Vector2(base_scale.x * 1.2, base_scale.y * 0.8), 0.08)
 	tween.tween_property(animate_sprite, "scale", base_scale, 0.12).set_trans(Tween.TRANS_BOUNCE)
 
-func say_something(	):
+func say_something():
 	squash_and_stretch()
-	if dialog and  dialog.is_valid():
+	if dialog and dialog.is_valid():
 		dialog.kill()
 	
 	is_idling = true
-	idler_timer = 2.4
-	speed = 0
-	
-	var available_phrases = frases.filter(func(p): return p != last_phrase)
-	var chosen_phrase = available_phrases.pick_random()
-	last_phrase = chosen_phrase
+	idler_timer =2.4
+	speed =0
 	
 	dialog_label.text = frases.pick_random()
 	dialog_label.modulate.a = 1.0
@@ -113,14 +124,13 @@ func say_something(	):
 	
 	dialog = create_tween()
 	dialog.tween_interval(2.0)
-	dialog.tween_property(dialog_label, "modulate:a", 0.0,0.4)
+	dialog.tween_property(dialog_label,"modulate:a",0.0,0.4)
 	dialog.tween_callback(func(): dialog_label.visible =false)
-
+	
 func look_at_mouse():
 	var mouse_pos = Vector2(DisplayServer.mouse_get_position())
 	var win_pos = Vector2(DisplayServer.window_get_position())
 	
-	# Si el cursor está a la izquierda, mira a la izquierda; si no, a la derecha
 	if mouse_pos.x < win_pos.x:
 		direction.x = -1
 		animate_sprite.flip_h = true
