@@ -56,29 +56,29 @@ region = Rect2(3001, 2534, 998, 838)
 atlas = ExtResource("2_ssx08")
 region = Rect2(3999, 2534, 998, 838)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_ssx08"]
+atlas = ExtResource("2_ssx08")
+region = Rect2(10, 843, 988, 843)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_np018"]
 atlas = ExtResource("2_ssx08")
-region = Rect2(3, 858, 999, 838)
+region = Rect2(998, 843, 988, 843)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_va2ct"]
 atlas = ExtResource("2_ssx08")
-region = Rect2(1002, 858, 999, 838)
+region = Rect2(1986, 843, 988, 843)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_14efy"]
 atlas = ExtResource("2_ssx08")
-region = Rect2(2001, 858, 999, 838)
+region = Rect2(2974, 843, 988, 843)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_s15tk"]
 atlas = ExtResource("2_ssx08")
-region = Rect2(3000, 858, 999, 838)
+region = Rect2(3962, 843, 988, 843)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_qi07n"]
 atlas = ExtResource("2_ssx08")
-region = Rect2(3999, 858, 999, 838)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_c3oqo"]
-atlas = ExtResource("2_ssx08")
-region = Rect2(4998, 858, 999, 838)
+region = Rect2(4950, 843, 988, 843)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_wojao"]
 animations = [{
@@ -143,6 +143,9 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_ssx08")
+}, {
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_np018")
 }, {
 "duration": 1.0,
@@ -156,9 +159,6 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_qi07n")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_c3oqo")
 }],
 "loop": 1,
 "name": &"walk",
@@ -166,7 +166,7 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_cygip"]
-size = Vector2(1186.2506, 1038.1954)
+size = Vector2(1357.0211, 1199.1581)
 
 [sub_resource type="LabelSettings" id="LabelSettings_g4v7s"]
 outline_size = 5
@@ -176,16 +176,17 @@ outline_color = Color(0, 0, 0, 0)
 script = ExtResource("1_ovojc")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1258741337]
-position = Vector2(97, 109.99999)
-scale = Vector2(0.1686124, 0.19026229)
+position = Vector2(102, 114)
+scale = Vector2(0.14738166, 0.16630551)
 sprite_frames = SubResource("SpriteFrames_wojao")
 animation = &"greeting"
+frame_progress = 0.6288643
 
 [node name="Area2D" type="Area2D" parent="AnimatedSprite2D" unique_id=62955819]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AnimatedSprite2D/Area2D" unique_id=1642414857]
-position = Vector2(23.67395, -61.834167)
-scale = Vector2(0.9999998, 1)
+position = Vector2(94.99148, 517.1205)
+scale = Vector2(0.99999976, 0.9999999)
 shape = SubResource("RectangleShape2D_cygip")
 
 [node name="DialogueLabel" type="Label" parent="." unique_id=719187183]
